@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, TextInput, Button, Alert } from "react-native";
 import React from "react";
 import PrimaryButton from "../components/PrimaryButton";
 
-type Props = {};
+type Props = { onPick: Function };
 
 const StartScreen = (props: Props) => {
   const [enteredNumber, setEnteredNumber] = React.useState("");
@@ -27,6 +27,7 @@ const StartScreen = (props: Props) => {
         { text: "Okay", style: "destructive", onPress: resetInputHandler },
       ]);
     }
+    props.onPick(enteredNumberValue);
   };
   return (
     <View style={styles.inputContainer}>
