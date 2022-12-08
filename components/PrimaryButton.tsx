@@ -1,13 +1,23 @@
-import { StyleSheet, Text, View, Pressable } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  GestureResponderEvent,
+} from "react-native";
 import React from "react";
 
-type Props = { children: React.ReactNode };
+type Props = {
+  children: React.ReactNode;
+  onPress?: (event: GestureResponderEvent) => void;
+};
 
 const PrimaryButton = (props: Props) => {
   return (
     <View style={styles.outerContainer}>
       <Pressable
         android_ripple={{ color: "#f63c1c" }}
+        onPress={props.onPress}
         style={({ pressed }) =>
           pressed
             ? [styles.innerContainer, styles.iosPress]
@@ -29,7 +39,6 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     // flexDirection: "column",
     // justifyContent: "center",
-
   },
   innerContainer: {
     backgroundColor: "#f45033",
