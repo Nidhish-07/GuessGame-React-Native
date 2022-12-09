@@ -8,6 +8,7 @@ import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
 import StartScreen from "./screens/StartScreen";
 import GameScreen from "./screens/GameScreen";
+import GameOverScreen from "./screens/GameOverScreen";
 // import Navigation from './navigation';
 
 export default function App() {
@@ -15,15 +16,29 @@ export default function App() {
   const colorScheme = useColorScheme();
 
   const [pickedNumber, setPickedNumber] = React.useState<number>();
+  const [gameIsOver, setGameIsOver] = React.useState<boolean>(true);
 
   const pickedNumberHandler = (userNumber: number) => {
     setPickedNumber(userNumber);
+    setGameIsOver(false);
   };
 
+  const gameOverHandler = () => {
+    setGameIsOver(true);
+  };
   let screen = <StartScreen onPick={pickedNumberHandler} />;
 
   if (pickedNumber) {
-    screen = <GameScreen></GameScreen>;
+    screen = (
+      <GameScreen
+        userNumber={pickedNumber}
+        onGameOver={gameOverHandler}
+      ></GameScreen>
+    );
+  }
+
+  if (gameIsOver && pickedNumber) {
+    screen = <GameOverScreen></GameOverScreen>;
   }
 
   if (!isLoadingComplete) {

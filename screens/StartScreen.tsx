@@ -1,6 +1,9 @@
 import { StyleSheet, Text, View, TextInput, Button, Alert } from "react-native";
 import React from "react";
 import PrimaryButton from "../components/PrimaryButton";
+import Title from "../components/Title";
+import Card from "../components/Card";
+import InstructionText from "../components/InstructionText";
 
 type Props = { onPick: Function };
 
@@ -30,24 +33,28 @@ const StartScreen = (props: Props) => {
     props.onPick(enteredNumberValue);
   };
   return (
-    <View style={styles.inputContainer}>
-      <TextInput
-        style={styles.textInput}
-        maxLength={2}
-        keyboardType="number-pad"
-        autoCapitalize="none"
-        autoCorrect={false}
-        value={enteredNumber}
-        onChangeText={numberInputHandler}
-      ></TextInput>
-      <View style={styles.buttonsContainer}>
-        <View style={styles.buttonContainer}>
-          <PrimaryButton onPress={resetInputHandler}>Reset</PrimaryButton>
+    <View style={styles.rootContainer}>
+      <Title>Guess My Number</Title>
+      <Card>
+        <InstructionText>Enter a Number</InstructionText>
+        <TextInput
+          style={styles.textInput}
+          maxLength={2}
+          keyboardType="number-pad"
+          autoCapitalize="none"
+          autoCorrect={false}
+          value={enteredNumber}
+          onChangeText={numberInputHandler}
+        ></TextInput>
+        <View style={styles.buttonsContainer}>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={resetInputHandler}>Reset</PrimaryButton>
+          </View>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={confirmInputHandler}>Confirm</PrimaryButton>
+          </View>
         </View>
-        <View style={styles.buttonContainer}>
-          <PrimaryButton onPress={confirmInputHandler}>Confirm</PrimaryButton>
-        </View>
-      </View>
+      </Card>
     </View>
   );
 };
@@ -55,20 +62,8 @@ const StartScreen = (props: Props) => {
 export default StartScreen;
 
 const styles = StyleSheet.create({
-  inputContainer: {
-    // flex: 1,
-    marginHorizontal: 24,
-    borderRadius: 8,
-    padding: 16,
-    marginTop: 100,
-    backgroundColor: "salmon",
-    elevation: 4,
-    shadowColor: "#2d2d2d",
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 6,
-    justifyContent: "center",
-    alignItems: "center",
-  },
+  rootContainer: { flex: 1, marginTop: 100, alignItems: "center", padding: 24 },
+
   textInput: {
     height: 50,
     fontSize: 32,
