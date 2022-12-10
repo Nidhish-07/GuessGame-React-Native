@@ -1,10 +1,13 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
+import { TextProps } from "./Themed";
 
-type Props = { children: React.ReactNode };
+type Props = { children: React.ReactNode; style?: any };
 
 const InstructionText = (props: Props) => {
-  return <Text style={styles.instructionText}>{props.children}</Text>;
+  return (
+    <Text style={[styles.instructionText, props.style]}>{props.children}</Text>
+  );
 };
 
 export default InstructionText;

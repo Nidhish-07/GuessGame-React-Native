@@ -1,9 +1,17 @@
-import { StyleSheet, Text, View, Alert } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Alert,
+  FlatList,
+  FlatListProps,
+} from "react-native";
 import React from "react";
 import Title from "../components/Title";
 import NumberContainer from "../components/NumberContainer";
 import PrimaryButton from "../components/PrimaryButton";
 import InstructionText from "../components/InstructionText";
+import { Ionicons } from "@expo/vector-icons";
 
 type Props = { userNumber: number; onGameOver: Function };
 
@@ -27,12 +35,20 @@ const GameScreen = (props: Props) => {
   const initialGuess: number = generateRandomNumber(1, 100, props.userNumber);
   const [guessedNumber, setGuessedNumber] =
     React.useState<number>(initialGuess);
+  const [guessRounds, setGuessedRounds] = React.useState<number[]>([
+    initialGuess,
+  ]);
 
   React.useEffect(() => {
     if (guessedNumber === props.userNumber) {
       props.onGameOver();
     }
   }, [guessedNumber, props.onGameOver, props.userNumber]);
+
+  React.useEffect(() => {
+    minBoundary = 1;
+    maxBoundary = 100;
+  }, []);
   const nextGuessHandler = (direction: string): void => {
     if (
       (direction === "lower" && guessedNumber < props.userNumber) ||
@@ -52,24 +68,43 @@ const GameScreen = (props: Props) => {
       guessedNumber
     );
     setGuessedNumber(newRandomNumber);
+    setGuessedRounds((prevRounds: number[]): number[] => [
+      newRandomNumber,
+      ...prevRounds,
+    ]);
   };
   return (
     <View style={styles.screen}>
       <Title>Computer's Guess</Title>
       <NumberContainer>{guessedNumber}</NumberContainer>
       <View>
-        <InstructionText>Higher or Low?</InstructionText>
-        <View>
-          <PrimaryButton onPress={nextGuessHandler.bind(this, "greater")}>
-            +
-          </PrimaryButton>
-          <PrimaryButton onPress={nextGuessHandler.bind(this, "lower")}>
-            -
-          </PrimaryButton>
+        <InstructionText style={styles.instructionText}>
+          Higher or Low?
+        </InstructionText>
+        <View style={styles.buttons}>
+          <View style={styles.button}>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, "greater")}>
+              <Ionicons name="md-add"></Ionicons>
+            </PrimaryButton>
+          </View>
+          <View style={styles.button}>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, "lower")}>
+              <Ionicons name="md-remove"></Ionicons>
+            </PrimaryButton>
+          </View>
         </View>
       </View>
       <View>
-        <Text>Log Rounds</Text>
+        {/* {guessRounds.map(
+          (guessRound): React.ReactNode => (
+            <Text key={guessRound}>{guessRound}</Text>
+          )
+        )} */}
+        <FlatList
+          data={guessRounds}
+          renderItem={(itemData) => <Text>{itemData.item}</Text>}
+          keyExtractor={(item):string => item.toString()}
+        ></FlatList>
       </View>
     </View>
   );
@@ -82,4 +117,11 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 25,
   },
+  buttons: {
+    flexDirection: "row",
+  },
+  button: {
+    flex: 1,
+  },
+  instructionText: { margin: 12 },
 });
