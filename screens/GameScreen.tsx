@@ -12,6 +12,7 @@ import NumberContainer from "../components/NumberContainer";
 import PrimaryButton from "../components/PrimaryButton";
 import InstructionText from "../components/InstructionText";
 import { Ionicons } from "@expo/vector-icons";
+import GuessLogItem from "../components/GuessLogItem";
 
 type Props = { userNumber: number; onGameOver: Function };
 
@@ -41,7 +42,7 @@ const GameScreen = (props: Props) => {
 
   React.useEffect(() => {
     if (guessedNumber === props.userNumber) {
-      props.onGameOver();
+      props.onGameOver(guessRounds.length);
     }
   }, [guessedNumber, props.onGameOver, props.userNumber]);
 
@@ -73,6 +74,8 @@ const GameScreen = (props: Props) => {
       ...prevRounds,
     ]);
   };
+
+  const guessRoundListLength: number = guessRounds.length;
   return (
     <View style={styles.screen}>
       <Title>Computer's Guess</Title>
@@ -94,7 +97,7 @@ const GameScreen = (props: Props) => {
           </View>
         </View>
       </View>
-      <View>
+      <View style={styles.listContainer}>
         {/* {guessRounds.map(
           (guessRound): React.ReactNode => (
             <Text key={guessRound}>{guessRound}</Text>
@@ -102,8 +105,13 @@ const GameScreen = (props: Props) => {
         )} */}
         <FlatList
           data={guessRounds}
-          renderItem={(itemData) => <Text>{itemData.item}</Text>}
-          keyExtractor={(item):string => item.toString()}
+          renderItem={(itemData) => (
+            <GuessLogItem
+              roundNumber={guessRoundListLength - itemData.index}
+              guess={itemData.item}
+            ></GuessLogItem>
+          )}
+          keyExtractor={(item): string => item.toString()}
         ></FlatList>
       </View>
     </View>
@@ -123,5 +131,11 @@ const styles = StyleSheet.create({
   button: {
     flex: 1,
   },
-  instructionText: { margin: 12 },
+  instructionText: {
+    margin: 12,
+  },
+  listContainer: {
+    flex: 1,
+    padding: 16,
+  },
 });

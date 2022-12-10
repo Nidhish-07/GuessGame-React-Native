@@ -23,11 +23,13 @@ const GameOverScreen = (props: Props) => {
         {/* <Image source={require('./assets/success.png')} style={styles.image}></Image> */}
       </View>
       <Text style={styles.summaryText}>
-        Your phone{" "}
+        You needed 
         <Text style={styles.highlightText}>{props.roundsNumber}</Text> need to
         guess <Text style={styles.highlightText}>{props.userNumber}</Text>
       </Text>
-      <PrimaryButton onPress={props.onRestartGame}>Start new game</PrimaryButton>
+      <PrimaryButton onPress={props.onRestartGame}>
+        Start new game
+      </PrimaryButton>
     </View>
   );
 };

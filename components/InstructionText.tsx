@@ -1,6 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
-import { TextProps } from "./Themed";
 
 type Props = { children: React.ReactNode; style?: any };
 
